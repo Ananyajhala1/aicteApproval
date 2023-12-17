@@ -1,0 +1,378 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://ananyajhala333:3I5AStUwsMmq@ep-black-wind-05707474.us-east-2.aws.neon.tech/aicte_database?sslmode=require
+"
+}
+model storage_Ids{
+  id Int @id @default(autoincrement())
+  institutes Institute[]
+  institutemoredetail InstituteMoreDetails[]
+  subsection subSection[]
+  organisationDetails organisationDetails[]
+  trusteDetail  trusteeDetails[]
+  contactPerson contactPerson[]
+  question questionnaire[]
+  program programDetails[]
+  course courseDetails[]
+  landDetail landDetails[]
+  moreDetails moreLandInformation[]
+  buildingDetails buildingDetails[]
+  buildingMoreDetails buildingDetailsMoreDetails[]
+  laboratoryDetails laboratoryDetails[]
+  administrativeArea administrativeArea[]
+  ametiesArea ametiesArea[]
+  circulationArea circulationArea[]
+
+
+}
+model Institute {
+  id Int @id @default(autoincrement())
+  currentApplicationNumber Int?
+  applicationType String? //dropdown
+  currentStatus String? //dropdown
+  subStstus  String?
+  academicYear Int? //drop down banana hai isko
+  applicationOpenedDate Int? //calender
+  applicationSubmittedDate Int? //calender
+  reopenedApplicationDate Int? //calender
+  appealRequestDate Int? //calender
+  applicationDontRecieved Boolean?
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+model InstituteMoreDetails {
+  id Int @id @default(autoincrement())
+  name String 
+  yearOfEstablishment Int //drop down aaega isme
+  instituteType String //option wala hai 
+  addressOfInstitute String
+  state_Ut String
+  district String
+  town String
+  pin String @db.VarChar(6)
+  primaryEmail String
+  percentGrantRecievedFromGovernment Int //dropdown 
+  forPWD Boolean
+  womenInstitute Boolean
+  LOIorLOIwithLOA String //option
+  selfFinancedCourses Boolean
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+model subSection{
+  id Int @id @default(autoincrement())
+  minorityInstitute Boolean
+  typeOfMinistry String //only applicable when minoeity is true
+  nameOfMinority String //only applicable when minoeity is true
+  nameOfMinorityOfLinguistic String //only applicable when minoeity is true
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+model organisationDetails{
+  id Int @id @default(autoincrement())
+  nameOfInstitute String
+  typeOfInstitute String //dropdown
+  registeredWith String 
+  regidtrationDate String //calender
+  organisationAddress String 
+  pin Int //6 digit only
+  PAN Int
+  state String
+  district String
+  town String
+  organisationWebsite String
+  STDcode Int //6 digit max.
+  landlineNumber Int //5-10 digit 
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+model trusteeDetails{
+  id Int @id @default(autoincrement())
+  name String
+  designation String
+  since String //calender 
+  till String //calender
+  mobileNo Int //10 digit only
+  email String //valid (end with @gmail.com)
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+//contact page page 2
+model contactPerson{
+  id Int @id @default(autoincrement())
+  Title String //dropdown
+  firstName String
+  middleName String?
+  lastName String?
+  address String
+  state String
+  district String
+  town String
+  postalCode Int //should be of length 6
+  designation String //drop down
+  STDcode Int 
+  landlineNumber Int?
+  mobileNumber Int //10 digits
+  alternateMobileNumber Int?
+  emailAddress String //check for the valid email
+  alternativeEmailAdress String?
+  //after filling this a verification appear for the sms/email verification
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+//page 3
+model questionnaire{
+  id Int @id @default(autoincrement())
+  whetherTheInstituteIsHavingApprovalFromCOAorPCIorAAC Boolean
+  ifYesPleaseSelectApprovedProgram String //omly applicable when says yes in first
+  whetheTheInstituteIsANonTechnicalInstituteSeekingApprovalForMBAorMCA Boolean
+  ifYouAreOnExistingInstitutionRunningPGDMorPGCM Int?
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+//page 4
+model programDetails{
+  id Int @id @default(autoincrement())
+  programme String //drop down menu
+  anyOtherNewProgram String?
+  yearOfStart String //calender
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+model courseDetails{
+  id Int @id @default(autoincrement())
+  programme String //drop down menu
+  affiliatingUniversity String
+  department String
+  nameOfTheCourse String
+  duration Int
+  levelOfCourse String //drop down 
+  yearStarted String //year drop down
+  shift String //only applicable when mode of conduct is regular and have drop down 
+  fullTimeorPartTime String //option drop down
+  intakeApplicableFor Int //drop down with the digits
+  applyingFor String 
+  modeOFCounduct String //drop down
+  courseType String //drop down 
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+// page 5
+//a
+model landDetails{
+  id Int @id @default(autoincrement())
+  location String //drop down
+  latitude String //drop down
+  longitude String //drop down
+  totalAreaInAcres Int
+  numberOfPieces Int //max 3
+  lattitudeDegree Int //0 - 90
+  londitudeDegree Int //0 - 90
+  landRestrictedWith String
+  landPieceArea1InAcres Float
+  latitudeMinute Int // 0 - 60
+  longitudeMinute Int // 0 - 60
+  ownwershipDetails String //drop down 
+  // applicable if pieces are 2
+  landPieceArea2InAcres Float
+  landUseCertificateIssuedBy String
+  landUseCertificateIssueDate String //calender
+  landInNorthernHillyArea Boolean
+  isLandMortgated Boolean
+  //applicable when mortyard is true
+  mortgatedPurpose String
+  dateIFRegistration String //calender
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+//b
+model moreLandInformation{
+  id Int @id @default(autoincrement())
+  landRegistrationNumber Int
+  dateOfRegistration String //calender
+  areaOfLand Float 
+  khosraNumbers Int
+  plotNumber Int
+  landSituatedAt String
+  landRegisteredInTheNameOf String
+  ownershiporGovernanentLease String //drop down
+  landUseCertificateIssued Boolean
+  landUseCertificationAuthority String //[only available when Land Certificate issued & yes)
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+//c
+model buildingDetails{
+  id Int @id @default(autoincrement())
+  buildingDetails String //drop dow
+  totalBuiltUpAreaReady Float //in sq feet
+  activitiesInTheBuildingOtherThanCoursesApprovedByAICTE String
+  whetherAccessCirculationAreaAndToiletAreaAreMaintainedAsPerNationalBuildingCodeNorms Boolean
+  totalCarpetAreaInstructionalReady Float //in sq feet
+  totalCarpetAreaAdministrativeReady Float //in sq feet
+  accessAndCirculationArea Float //in sq feet
+  totalBuiltUpAreaPlanned Float //in sq feet
+  totalCarpetAreaAmenitiesReady Float //in sq feet
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+//d
+model buildingDetailsMoreDetails{
+  id Int @id @default(autoincrement())
+  buildingName String
+  buildingApprovalNumber Int
+  sanctiondBuildUpArea Int //(Members daslenewali field)
+  constructedBuildUpArea Int
+  approvedCarpetAreaInstructional Int
+  constructedCarpetAreaInstructional Int
+  approvedCarpetAreaAdministrative Int
+  constructiveCorpetAreaAdministrative Int
+  approvedCarpetAreaAmenities Int
+  constructedCarpetAreaAmenities Int
+  totalAreaApproved Int
+  totalAreaConstructed Int
+  activitiesConductedInTheBuilding String
+  NonAICTEApprovedCoursesRunInTheBuilding String? //if any
+  buildingPlanApprovalAuthority String
+  buildingPlanApprovalDate String //calender
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+//e
+model laboratoryDetails{
+  id Int @id @default(autoincrement())
+  Programme String //drop down 
+  department String//(Takea list of all departments that come in that particular program I put them in the dropdown memper Liaven string field)
+  Course String //same as above
+  Level String //drop down
+  isItResearchCabForPGCourses Boolean
+  nameOfTheLaboratory String
+  lobMeyerEquipments String
+  buildingName String
+  buildingNumber Int
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+  
+}
+//f
+model administrativeArea{
+  id Int @id @default(autoincrement())
+  roomID String
+  roomType String //drop down
+  area Float // in sq feet
+  buildingName String
+  buildingNumber Int
+  readinessofFlooring String //ready or not ready
+  readinessofWallAndPainting String //ready or not ready
+  readinessofElectrificationAndLightning String //ready or not ready
+  readinessofFurniture String //ready or not ready
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+//g
+model ametiesArea{
+  id Int @id @default(autoincrement())
+  roomID String
+  roomType String //drop down 
+  area Float //in sq feet
+  bildingName String
+  buildingNumber Int
+  readinessOfFlooring String //Ready/Not Ready
+  readinessOfWallandPainting   String    //Ready Not Ready
+  readinessOfElectrificationAndLighting String // ""
+  readinessOfFurniture String //""
+  airConditioning String //-Not Available/Planned/Available
+  siteChangeFlag Boolean 
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+//h
+model circulationArea{
+  id Int @id @default(autoincrement())
+  areaType String //drop down 
+  averageCarpetArea Float 
+  flooring Boolean
+  paintingDone String //ready/not ready 
+  electrifcationAndLightning String //ready/not ready
+  buildingName String
+  buildingNumber Int
+  author storage_Ids    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+//i
+model instructionalArea{
+  id Int @id @default(autoincrement())
+  programme String //drop down
+  level String //drop down
+  roomType String //drop down
+  roomID String
+  areaOfRoom Int // in sq feet
+  buildingName String 
+  readinessOfFlooring String //ready or not ready
+  readinessOfWallAndPainting String //ready or not ready
+  readinessOfElectrificationAndLighting String //ready or not ready
+  readinessOfFurnitureOrFixtures String //ready or not ready
+  airConditioning String //not available or planned or available 
+}
+//commom facilities
+//j
+model infrastructuralArea{
+  id Int @id @default(autoincrement())
+  roomType String //drop down
+  roomID String
+  areaOfRoom Int // in sq feet
+  readinessOfFlooring String //ready or not ready
+  readinessOfWallAndPainting String //ready or not ready
+  readinessOfElectrificationAndLighting String //ready or not ready
+  readinessOfFurnitureOrFixtures String //ready or not ready
+  airConditioning String //not available or planned or available 
+  buildingName String
+  buildingNumber Int
+}
+//k
+model hostelFacilities{
+  id Int @id @default(autoincrement())
+  whetherTheHostelFacilitiyIsAvailable Boolean
+  girlsHostel Boolean
+  numberOfRooms Int
+  hostelCapacity Int
+  boysHostel Boolean
+  numberOfRoomsForBoys Int
+  totalCapacity Int
+}
+//l
+model computationalFacilites{
+  id Int @id @default(autoincrement())
+  PClaptopsExclusivelyAvailableToStudents Int
+  PClaptopsAvailableInLibrary Int
+  PClaptopsAvailableInAdministrativeOffice Int
+  PClaptopsAvailableForFacultyMember Int
+  numberOfPcInLanguageLab Int
+  internetBandwidthInMbps Int
+  numberOfLegalApplicationSoftware Int
+  printersAvailableToStudents Int
+  numberOfA1SizeColorPrinter Int
+  numberOfLegalSystemSoftware Int
+  numberOfOpenSourceSoftware Int
+  numberOfPropsitory Int
+}
+//page 6
+
+
+
+
+// model Post {
+//   id        Int     @id @default(autoincrement())
+//   title     String
+//   content   String?
+//   published Boolean @default(false)
+//   author    User    @relation(fields: [authorId], references: [id])
+//   authorId  Int
+// }
