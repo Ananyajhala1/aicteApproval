@@ -1,10 +1,16 @@
-const project =require('../model/project');
+// const project =require('../model/project');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-
 const createNewInstitute = async (req, res) => {
+  
     try {
+        const newStorageIds = await prisma.storage_Ids.create({
+            data: {
+             
+            },
+          });
+      
         const {
             currentApplicationNumber,
             applicationType,
@@ -16,16 +22,20 @@ const createNewInstitute = async (req, res) => {
             reopenedApplicationDate,
             appealRequestDate,
             applicationDontRecieved,
-            authorId
+           
+           
+          
+           
         } = req.body;
-
+         
+         
         // Check if required fields are missing
-        if (!authorId) {
-            return res.status(400).json({ 'message': 'Author ID is required' });
-        }
+        // if (!authorId) {
+        //     return res.status(400).json({ 'message': 'Author ID is required' });
+        // }
 
         // Creating a new entry for Institute
-        await prisma.Institute.create({
+        await prisma.institute.create({
             data: {
                 currentApplicationNumber,
                 applicationType,
@@ -37,13 +47,33 @@ const createNewInstitute = async (req, res) => {
                 reopenedApplicationDate,
                 appealRequestDate,
                 applicationDontRecieved,
-                author: {
-                    connect: {
-                        id: authorId
-                    }
+                authorId: newStorageIds.id
+               
                 }
-            }
-        });
+        
+         
+  });
+
+  
+        // await prisma.institute.create({
+        //     data: {
+        //         currentApplicationNumber,
+        //         applicationType,
+        //         currentStatus,
+        //         subStstus,
+        //         academicYear,
+        //         applicationOpenedDate,
+        //         applicationSubmittedDate,
+        //         reopenedApplicationDate,
+        //         appealRequestDate,
+        //         applicationDontRecieved,
+        //         author: {
+        //             connect: {
+        //                 id: authorId
+        //             }
+        //         }
+        //     }
+        // });
 
         console.log('New Institute entry created successfully.');
         res.status(201).json({ 'message': 'New Institute entry created successfully.' });

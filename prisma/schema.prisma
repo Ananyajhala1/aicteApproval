@@ -7,8 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://ananyajhala333:3I5AStUwsMmq@ep-black-wind-05707474.us-east-2.aws.neon.tech/aicte_database?sslmode=require
-"
+  url      = "postgresql://ananyajhala333:3I5AStUwsMmq@ep-black-wind-05707474.us-east-2.aws.neon.tech/aicte_database?sslmode=require"
 }
 model storage_Ids{
   id Int @id @default(autoincrement())
