@@ -3,8 +3,7 @@ const bcrypt = require('bcrypt');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
-
-
+const sendMail = require('../sendMail')
 const handleLogin = async (req, res) => {
     const { user, pwd } = req.body;
     if (!user || !pwd) return res.status(400).json({ 'message': 'Username and password are required.' });
@@ -45,12 +44,13 @@ const handleLogin = async (req, res) => {
 const handleRegister= async (req, res) => {
     const { instituteName, firstName ,lastName , designation, address, email ,contactNumber } = req.body;
     // 
+    console.log(`registering ${firstName}`)
     if (!firstName || !email || !contactNumber) return res.status(400).json({ 'message': 'Some fields are missing.' });
      // check for duplicate usernames in the db
     // const duplicate = await User.findOne({username:user}).exec();
     // if (duplicate) return res.sendStatus(409); //Conflict
     try {
-        await prisma.User.create({
+        const newUser = await prisma.User.create({
             data: {
                 firstName,
                 lastName,
@@ -60,6 +60,12 @@ const handleRegister= async (req, res) => {
                 contactNumber,
             }
         });
+        await sendMail(email,"Login Credentials",
+        `Welcome to AICTE WEB PORTAL \n 
+         Following are your login credentials : 
+         Username = ${firstName + lastName}
+         password = ${newUser.id}
+        `);
         res.status(201).json({ 'success': `New user ${firstName} created!` });
     } catch (err) {
         res.status(500).json({ 'message': err.message  });
