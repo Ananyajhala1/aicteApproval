@@ -4,16 +4,13 @@ const projectsController = require('../../controllers/projectsController');
 
 
 router.route('/institute')
-   
-    .post(projectsController.createNewInstitute);
+   .post(projectsController.createNewInstitute);
 
- router.route('/InstituteMoreDetails')
-   
-    .post(projectsController.createNewInstituteMoreDetails);
+router.route('/InstituteMoreDetails')
+   .post(projectsController.createNewInstituteMoreDetails);
 
-    router.route('/SubSection')
-   
-    .post(projectsController.createNewSubSection);
+router.route('/SubSection')
+   .post(projectsController.createNewSubSection);
 
     router.route('/OrganisationDetails')
    
