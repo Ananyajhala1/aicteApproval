@@ -45,7 +45,7 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 app.use('/projects', require('./routes/api/projects'));
 app.use('/auth',require('./routes/auth/auth'))
 app.use('/users', require('./routes/getUser'));
-app.use('')
+app.use('/notification',require('./routes/notifcation'));
 app.all('*', (req, res) => {
     res.status(404);
     if (req.accepts('html')) {
