@@ -48,7 +48,6 @@ const createNewInstitute = async (req, res) => {
                 appealRequestDate,
                 applicationDontRecieved,
                 authorId: newStorageIds.id
-               
                 }
         
          

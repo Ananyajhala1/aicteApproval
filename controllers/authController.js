@@ -1,7 +1,7 @@
-const User=require('../model/User');
 
 const bcrypt = require('bcrypt');
-
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
 
 
@@ -42,4 +42,29 @@ const handleLogin = async (req, res) => {
     }
 }
 
-module.exports = { handleLogin };
+const handleRegister= async (req, res) => {
+    const { instituteName, firstName ,lastName , designation, address, email ,contactNumber } = req.body;
+    // 
+    if (!firstName || !email || !contactNumber) return res.status(400).json({ 'message': 'Some fields are missing.' });
+     // check for duplicate usernames in the db
+    // const duplicate = await User.findOne({username:user}).exec();
+    // if (duplicate) return res.sendStatus(409); //Conflict
+    try {
+        await prisma.User.create({
+            data: {
+                firstName,
+                lastName,
+                address,
+                designation,
+                email,
+                contactNumber,
+            }
+        });
+        res.status(201).json({ 'success': `New user ${firstName} created!` });
+    } catch (err) {
+        res.status(500).json({ 'message': err.message  });
+    }
+}
+
+
+module.exports = { handleLogin,handleRegister };
