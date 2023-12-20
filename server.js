@@ -9,11 +9,10 @@ const errorHandler = require('./middleware/errorHandler');
 const verifyJWT = require('./middleware/verifyJWT');
 const cookieParser = require('cookie-parser');
 const credentials = require('./middleware/credentials');
-
+const createpdf = require("./index")
 const PORT = process.env.PORT || 3500;   
 // custom middleware logger
 // app.use(logger);
-
 // Handle options credentials check - before CORS!
 // and fetch cookies credentials requirement
 // app.use(credentials);
@@ -42,6 +41,15 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 
 
 // app.use(verifyJWT);
+app.get('/templateGeneration',async (req,res)=>{
+    try {
+        await createpdf("pdf/form5.pdf", "result.pdf");
+        res.status(201).json({ 'message': 'Document Uploaded to firebase' });
+    } catch (error) {
+        console.error('Error creating Template:', error);
+        res.status(500).json({ 'error': 'Error creating template' });
+    }
+})
 app.use('/projects', require('./routes/api/projects'));
 app.use('/auth',require('./routes/auth/auth'))
 app.use('/users', require('./routes/getUser'));
@@ -58,9 +66,6 @@ app.all('*', (req, res) => {
 });
 
 app.use(errorHandler);
-// mongoose.connection.once('open',()=>{
-
-// console.log('connected to mongoDB');
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 // })

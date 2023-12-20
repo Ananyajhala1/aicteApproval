@@ -4,7 +4,7 @@ const { initializeApp } = require('firebase/app');
 const { getStorage, ref, uploadBytesResumable, getDownloadURL } = require('@firebase/storage');
 
 
-async function createPdf(input, output) {
+const createpdf = async (input, output)=>{
     try {
         const pdfDoc = await PDFDocument.load(await readFile(input));
 
@@ -134,6 +134,8 @@ async function createPdf(input, output) {
     }
 }
 
-
-createPdf("pdf/form5.pdf", "result.pdf");
+const done = ()=>{
+    return "heel0"
+}
+module.exports = createpdf
 
