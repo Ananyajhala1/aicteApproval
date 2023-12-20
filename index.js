@@ -110,7 +110,7 @@ const createpdf = async (input, output)=>{
         const storage = getStorage(app);
 
         // Upload the modified PDF to Firebase Storage
-        const storageRef = ref(storage, '/path/to/upload/result.pdf');
+        const storageRef = ref(storage, '/templates/result.pdf');
         const uploadTask = uploadBytesResumable(storageRef, pdfBytes);
 
         uploadTask.on(
@@ -134,8 +134,5 @@ const createpdf = async (input, output)=>{
     }
 }
 
-const done = ()=>{
-    return "heel0"
-}
-module.exports = createpdf
+ createpdf('pdf/form5.pdf', 'result_final.pdf');
 
